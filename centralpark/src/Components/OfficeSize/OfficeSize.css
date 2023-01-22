@@ -1,0 +1,63 @@
+.col,
+.col-6 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.new_office_size {
+  background-color: white;
+  width: 95%;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+.new_office_size form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.new_office_size form h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.new_office_size form input,
+select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: #f5f8fa;
+  height: 45px;
+  border-radius: 8px;
+  padding: 15px;
+  font-weight: 600;
+  color: #636478;
+}
+select {
+  padding: 10px;
+  height: 45px;
+}
+
+.min_size,
+.max_size,
+.m_unit {
+  margin-top: 25px;
+  color: #3f4254;
+  font-weight: 600;
+}
+
+.btn_create {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #f5f0ff;
+  padding-top: 20px;
+}
+
+.broker_company,
+.broker_name {
+  color: #3f4254;
+  font-weight: 600;
+}

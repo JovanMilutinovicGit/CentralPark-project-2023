@@ -1,0 +1,37 @@
+.panel__top {
+  background-color: white;
+  width: 100%;
+}
+.panel__top {
+  padding: 14px 25px;
+}
+.panel__top .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel_left {
+  width: 130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+h4,
+h6 {
+  margin-bottom: 0;
+}
+h4 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.panel__top span {
+  font-weight: 100;
+  opacity: 0.3;
+  font-size: 20px;
+}
+h6 {
+  opacity: 0.5;
+  font-size: 12px;
+  width: 50%;
+}

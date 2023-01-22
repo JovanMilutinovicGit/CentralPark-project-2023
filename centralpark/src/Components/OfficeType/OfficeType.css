@@ -1,0 +1,51 @@
+.col {
+  padding-left: 0;
+  padding-right: 0;
+}
+.office_type {
+  background-color: white;
+  width: 100%;
+  border-radius: 8px;
+}
+.office_type form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding: 25px;
+}
+
+.office_type form h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.office_type form input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: #f5f8fa;
+  height: 45px;
+  border-radius: 8px;
+  padding: 15px;
+  font-weight: 600;
+  color: #636478;
+}
+
+.office_type_name,
+.btn_create {
+  margin-top: 25px;
+}
+
+.btn_create {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #f5f0ff;
+  padding-top: 20px;
+}
+
+.office_type {
+  color: #3f4254;
+  font-weight: 600;
+}

@@ -1,0 +1,15 @@
+.add_new {
+  width: 100%;
+  background-color: #f5f8fa;
+  padding: 30px 66px;
+}
+.inner_add_new {
+  width: 100%;
+  border: 2px solid grey;
+}
+
+.container-fluid,
+.container {
+  padding-right: 0;
+  padding-left: 0;
+}
