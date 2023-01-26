@@ -40,7 +40,7 @@ const Navbar = ({ func }) => {
 
       <div className="menu_container">
         <ul className="menu">
-          {menuItem.map(({ path, icon, title }) => (
+          {menuItem.map(({ id, path, icon, title }) => (
             <NavLink
               onClick={() => {
                 setSelected(title);
@@ -49,7 +49,7 @@ const Navbar = ({ func }) => {
               style={navLinkStyles}
               to={path}
             >
-              <li>
+              <li key={id}>
                 <div className="icon_">{icon}</div> {title}
               </li>
             </NavLink>

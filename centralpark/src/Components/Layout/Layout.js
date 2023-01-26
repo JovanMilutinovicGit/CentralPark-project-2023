@@ -7,7 +7,6 @@ import PanelBottom from "../Panels/PanelBottom/PanelBottom";
 
 const Layout = () => {
   const [selVal, setSelVal] = useState("Add new");
-
   const getValue = (value) => {
     setSelVal(value);
   };

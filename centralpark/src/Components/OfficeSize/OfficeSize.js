@@ -21,7 +21,7 @@ const OfficeSize = () => {
         <div className="m_unit">
           <p>
             Measurement unit
-            <RequiredStar />{" "}
+            <RequiredStar />
           </p>
           <select required>
             <option value="sq ft">sq ft</option>
