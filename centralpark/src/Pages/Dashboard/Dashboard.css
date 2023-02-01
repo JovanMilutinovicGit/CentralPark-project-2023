@@ -2,6 +2,9 @@
   margin-right: 0;
   margin-left: 0;
 }
+#three-circles-wrapper {
+  justify-content: center;
+}
 
 .dashboard {
   width: 100%;
@@ -17,6 +20,11 @@
 }
 .table_with_data {
   padding: 0 40px 35px;
+}
+
+.table_D {
+  display: flex;
+  justify-content: center;
 }
 
 .dashboard form {
@@ -82,25 +90,27 @@ td:hover {
   color: #009ef7;
 }
 
+tr {
+  border-bottom: 1px dashed #eff0f1;
+}
+
 .actions_title {
   display: flex;
   justify-content: center;
 }
 
-span {
+.table_with_data span {
   padding: 5px 10px;
   border-radius: 8px;
   font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0px;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-i {
-  cursor: pointer;
 }
 
 i:hover {
@@ -111,15 +121,24 @@ i:hover {
 .edit {
   background-color: #f5f8fa;
   color: #a1a5b7;
-  padding: 10px;
+  cursor: pointer;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+
+.showNitems {
+  width: 35%;
 }
 .deleteMoreThanOne_btn {
-  padding: 10px 20px;
+  padding: 8px 20px;
   background-color: #f1416c;
   color: white;
   border-radius: 8px;
   border: none;
   transition: 0.3s;
+  outline: none;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .deleteMoreThanOne_btn:hover {
@@ -130,34 +149,58 @@ i:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
+}
+
+.bottom_dashboard_left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 180px;
 }
 
 .bottom_dashboard_left select {
   font-size: 13px;
+  border: none;
+  background-color: #f5f8fa;
+  border-radius: 10px;
+  outline: none;
+  height: 100%;
 }
 
 .bottom_dashboard_right {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 8%;
+  justify-content: flex-end;
+  width: 15%;
 }
 
-.bottom_dashboard p {
-  padding: 6px 8px;
-  letter-spacing: 1px;
-  border-radius: 8px;
-  transition: 0.1s;
-  font-weight: 500;
+.bottom_dashboard_right ul {
+  list-style: none;
+  display: flex;
+}
+
+.bottom_dashboard_right ul a {
   color: #5e6278;
-  text-transform: uppercase;
-  font-size: 14px;
-  width: 50%;
-  margin-bottom: 0;
+  font-weight: 500;
+  padding: 6px 13px;
+  border-radius: 7px;
 }
 
-.bottom_dashboard_right p:hover {
-  color: #009ef7;
-  background-color: #f1faff;
+.bottom_dashboard_right ul a:hover {
+  text-decoration: none;
   cursor: pointer;
+  background-color: #f1faff;
+  color: #009ef7;
+}
+
+.selected {
+  background-color: #c0eaff;
+  color: white;
+  border-radius: 8px;
+  color: white;
+}
+
+li:not(:first-child):not(:last-child) {
+  display: none;
 }

@@ -1,0 +1,95 @@
+.edit_modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 22222;
+  width: 800px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.title_modal {
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eff2f5;
+  width: 100%;
+}
+
+.edit_modal form {
+  padding: 20px;
+}
+
+.broker_company_name {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit_modal input {
+  background-color: #f5f8fa;
+  border: none;
+  border-radius: 7px;
+  outline: none;
+  height: 40px;
+  color: #5e6278;
+  padding: 15px;
+  font-weight: 600;
+}
+.edit_modal label {
+  font-weight: 600;
+  color: #181c32;
+}
+
+.broker__parent,
+.company__parent,
+.client_details_parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.client_details_parent,
+.office_type_parent,
+.office_size_parent,
+.introduced_via_mail_parent,
+.first_visit_parent {
+  margin-top: 13px;
+}
+
+.broker__parent {
+  width: 35%;
+}
+.company__parent {
+  width: 45%;
+  padding-left: 10px;
+}
+
+.client_details_parent {
+  width: 35%;
+}
+
+.edit_btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #7e8299;
+}
+.bottom_modal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 30px;
+  border-top: 1px solid #eff2f5;
+}
+
+.btn_close {
+  padding: 11px 21px;
+  background-color: #009ef7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+}

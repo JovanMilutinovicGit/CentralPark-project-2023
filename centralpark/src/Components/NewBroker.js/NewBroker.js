@@ -3,7 +3,6 @@ import RequiredStar from "../RequiredStar/RequiredStar";
 import "./NewBroker.css";
 import { useNewBrokerMutation } from "../../services/brokerData";
 import { useDispatch } from "react-redux";
-import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 
 const NewBroker = () => {
@@ -11,7 +10,7 @@ const NewBroker = () => {
     broker_company: "",
     broker_name: "",
   };
-  const [newBroker, { isLoading }] = useNewBrokerMutation();
+  const [newBroker] = useNewBrokerMutation();
   const [formValue, setFormValues] = useState(initialState);
   const { broker_company, broker_name } = formValue;
   const dispatch = useDispatch();

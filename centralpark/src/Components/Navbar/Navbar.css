@@ -43,9 +43,14 @@
   background-color: #1a1a27;
   color: white;
 }
-.navbarr ul li:hover i {
-  color: #134266;
+
+.navbarr ul li:hover .icon_ {
+  color: #009ef7;
 }
+
+/* .navbarr ul li:hover i {
+  color: #134266;
+} */
 
 .icon_ {
   display: flex;
@@ -66,8 +71,4 @@
   border-radius: 8px;
   padding: 8px 0;
   outline: none;
-}
-
-.selected {
-  border: 2px solid red;
 }

@@ -5,6 +5,5 @@ export const apiSlice = createApi({
     baseUrl: "https://central-park.doniraj-krv.w3lab.cloud",
   }),
   mode: "no-cors",
-  tagTypes: ["Note", "User"],
   endpoints: (builder) => ({}),
 });

@@ -1,31 +1,47 @@
 import React from "react";
 import Login from "./Pages/Login/Login";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import AddNew from "./Pages/AddNew/AddNew.js";
 import "./App.css";
 import Layout from "./Components/Layout/Layout";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import Cookies from "universal-cookie";
 import { ToastContainer } from "react-toastify";
+import AuthWrapper from "./Components/AuthWrapperRoutes/AuthWrapper";
 
 const App = () => {
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-
   return (
     <div className="app">
-      {/*<Login />*/}
+      {/* <Login /> */}
       <Router>
-        {token ? (
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index path="/addNew" element={<AddNew />} />
-              <Route path="/dashboard" index element={<Dashboard />} />
-            </Route>
-          </Routes>
-        ) : (
-          <Login />
-        )}
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Navigate to="/addNew" />} exact />
+            <Route
+              path="/addNew"
+              element={
+                <AuthWrapper>
+                  <AddNew />
+                </AuthWrapper>
+              }
+              exact
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <AuthWrapper>
+                  <Dashboard />
+                </AuthWrapper>
+              }
+              exact
+            />
+          </Route>
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </Router>
       <ToastContainer
         position="top-center"

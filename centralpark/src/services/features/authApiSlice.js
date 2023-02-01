@@ -15,21 +15,28 @@ export const authApiSlice = apiSlice.injectEndpoints({
         };
       },
 
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setCredentials(data));
-          dispatch(apiSlice.util.resetApiState());
-        } catch (err) {
-          console.log(err);
-        }
-      },
+      // async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled;
+      //     dispatch(setCredentials(data));
+      //     dispatch(apiSlice.util.resetApiState());
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+      // },
     }),
     sendLogout: builder.mutation({
-      query: () => ({
-        url: "/api/auth/logout",
-        method: "POST",
-      }),
+      query: (credentials) => {
+        let formdata = new FormData();
+        formdata.append("email", "admin3123@mail.com");
+        formdata.append("password", "qwerty");
+        return {
+          url: "/api/auth/login",
+          method: "POST",
+          body: formdata,
+        };
+      },
+
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           //const { data } =

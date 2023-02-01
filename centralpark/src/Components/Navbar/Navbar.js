@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import logoWhite from "../../images/logo-white.png";
 import "./Navbar.css";
 import { NavLink } from "react-router-dom";
@@ -6,9 +6,6 @@ import { BiListUl } from "react-icons/bi";
 import { IoMdAdd } from "react-icons/io";
 
 const Navbar = ({ func }) => {
-  const [isActive, setIsActive] = useState(false);
-  const [selected, setSelected] = useState("");
-
   const menuItem = [
     {
       id: "1",
@@ -42,8 +39,8 @@ const Navbar = ({ func }) => {
         <ul className="menu">
           {menuItem.map(({ id, path, icon, title }) => (
             <NavLink
+              key={id}
               onClick={() => {
-                setSelected(title);
                 func(title);
               }}
               style={navLinkStyles}

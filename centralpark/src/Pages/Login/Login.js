@@ -7,13 +7,14 @@ import { useLoginMutation } from "../../services/features/authApiSlice";
 import Cookies from "universal-cookie";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [login, { isLoading, isError }] = useLoginMutation();
-
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cookies = new Cookies();
 
@@ -22,13 +23,13 @@ const Login = () => {
   }, [email, password]);
 
   const handleSubmit = async (e) => {
-    console.log(isLoading);
     e.preventDefault();
     try {
       const userData = await login(email, password);
       dispatch(setCredentials({ ...userData, email }));
       cookies.set("token", userData.data.access_token);
-      toast.success("Login ok");
+      toast.success("Login success");
+      navigate("/");
       setEmail("");
       setPassword("");
     } catch (err) {
@@ -58,7 +59,6 @@ const Login = () => {
       <div className="container">
         <div className="row form__div">
           <img src={logo} />
-
           <form onSubmit={handleSubmit}>
             <div className="title">
               <h4>Sign In</h4>

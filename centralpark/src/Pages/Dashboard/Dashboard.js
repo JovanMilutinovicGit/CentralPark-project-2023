@@ -1,21 +1,37 @@
 import React, { useState } from "react";
 import "./Dashboard.css";
 import {
-  useBrokerDataQuery,
+  useGetBrokerDataQuery,
   useDeleteBrokerMutation,
+  useDeleteOneBrokerMutation,
 } from "../../services/brokerData";
 import dateFormat, { masks } from "dateformat";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { openModal } from "../../services/features/EditModalSlice";
+import ReactPaginate from "react-paginate";
 import { ThreeCircles } from "react-loader-spinner";
-import Modal from "react-modal";
+import { setData } from "../../services/features/EditDataSlice";
 
 const Dashboard = () => {
-  const { data, isLoading } = useBrokerDataQuery();
   const [deleteBroker] = useDeleteBrokerMutation();
+  const [deleteOneBroker] = useDeleteOneBrokerMutation();
   const [selectedItems, setSelectedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [nViewItems, setNViewItems] = useState(10);
+  const [selectValue, setSelectValue] = useState(10);
+
+  const v = {
+    cp: currentPage,
+    sv: selectValue,
+  };
+  const { data, isLoading } = useGetBrokerDataQuery(v);
   masks.hammerTime = "yyyy/m/d HH:MM";
+
+  const dispatch = useDispatch();
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected + 1);
+  };
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -37,21 +53,44 @@ const Dashboard = () => {
     if (selectedItems.length > 0) {
       toast.success("Visit Deleted Successfully");
       deleteBroker(selectedItems);
+      setSelectedItems([]);
     } else {
       toast.error("Please select item");
     }
   };
 
-  const setPageNumberP = () => {
-    setCurrentPage(currentPage + 1);
+  const deleteOneVisit = () => {
+    if (selectedItems.length === 1) {
+      toast.success("Visit Deleted Successfully");
+      deleteOneBroker(selectedItems);
+      setSelectedItems([]);
+    } else {
+      toast.error("Please select item");
+    }
   };
-  const setPageNumberN = () => {
-    setCurrentPage(currentPage - 1);
+
+  const setSelVal = (event) => {
+    setCurrentPage(1);
+    setSelectValue(event.target.value);
   };
 
   return (
     <div className="dashboard">
-      {!isLoading ? (
+      {isLoading && (
+        <ThreeCircles
+          height="100"
+          width="100"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="three-circles-rotating"
+          outerCircleColor="#009EF7"
+          innerCircleColor="#C0EAFF"
+          middleCircleColor="#009EF7"
+        />
+      )}
+      {!isLoading && (
         <div className="container-fluid">
           <div className="row form_inputs">
             <div className="col">
@@ -92,8 +131,12 @@ const Dashboard = () => {
                             broker_company: { title },
                             created_at,
                             client: { name },
-                            office_size: { min },
-                            office_type: { title: office_t },
+                            broker: { name: broker_name },
+                            office_size: { min, max, id: size_id },
+                            office_type: {
+                              title: office_t,
+                              id: visit_office_type_id,
+                            },
                             introduced_via_mail,
                             first_visit,
                           }) => {
@@ -111,7 +154,7 @@ const Dashboard = () => {
                                 <td>{name}</td>
                                 <td>{office_t}</td>
                                 <td>
-                                  {min}
+                                  {min} {max ? `- ${max}` : ""}
                                   <sub>sq ft</sub>
                                 </td>
                                 <td>
@@ -150,13 +193,29 @@ const Dashboard = () => {
                                 </td>
                                 <td className="actions">
                                   <i
+                                    onClick={() => {
+                                      dispatch(openModal(true));
+                                      dispatch(
+                                        setData({
+                                          id,
+                                          title,
+                                          name,
+                                          size_id,
+                                          office_t,
+                                          introduced_via_mail,
+                                          first_visit,
+                                          broker_name,
+                                          visit_office_type_id,
+                                        })
+                                      );
+                                    }}
                                     className="fa fa-pencil edit"
                                     aria-hidden="true"
                                   ></i>
                                   <i
                                     className="fa fa-trash delete"
                                     aria-hidden="true"
-                                    onClick={deleteSelectedItems}
+                                    onClick={deleteOneVisit}
                                   ></i>
                                 </td>
                               </tr>
@@ -170,7 +229,15 @@ const Dashboard = () => {
               <row>
                 <div className="bottom_dashboard">
                   <div className="bottom_dashboard_left">
-                    <select>
+                    {selectedItems.length > 0 && (
+                      <button
+                        className="deleteMoreThanOne_btn"
+                        onClick={deleteSelectedItems}
+                      >
+                        Delete
+                      </button>
+                    )}
+                    <select className="showNitems" onChange={setSelVal}>
                       <option value="10">10</option>
                       <option value="50">50</option>
                       <option value="100">100</option>
@@ -178,38 +245,21 @@ const Dashboard = () => {
                     </select>
                   </div>
                   <div className="bottom_dashboard_right">
-                    {currentPage > 1 ? (
-                      <p onClick={setPageNumberN}>Prev</p>
-                    ) : (
-                      ""
-                    )}
-                    <p onClick={setPageNumberP}>Next</p>
+                    <>
+                      <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="Next"
+                        onPageChange={handlePageClick}
+                        pageCount={data.total / data.per_page}
+                        previousLabel="Prev"
+                        renderOnZeroPageCOunt={null}
+                      />
+                    </>
                   </div>
                 </div>
-                {/* <button
-                  className="deleteMoreThanOne_btn"
-                  onClick={deleteSelectedItems}
-                >
-                  Delete
-                </button> */}
               </row>
             </div>
           </div>
-        </div>
-      ) : (
-        <div>
-          <ThreeCircles
-            height="100"
-            width="100"
-            color="#4fa94d"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel="three-circles-rotating"
-            outerCircleColor="#009EF7"
-            innerCircleColor="#F1FAFF"
-            middleCircleColor="#009EF7"
-          />
         </div>
       )}
     </div>
