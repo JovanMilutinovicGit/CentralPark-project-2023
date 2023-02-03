@@ -31,7 +31,7 @@ export const brokerData = createApi({
       },
     }),
     GetBrokerData: builder.query({
-      query: ({ cp, sv }) => `/api/visit?page=${cp}&per_page=${sv}`,
+      query: ({ cp, sv, s }) => `/api/visit?page=${cp}&per_page=${sv}`,
       providesTags: (result, error, page) =>
         result
           ? [
@@ -40,6 +40,21 @@ export const brokerData = createApi({
             ]
           : [{ type: "visit", id: "PARTIAL-LIST" }],
     }),
+
+    getFilteredData: builder.mutation({
+      query: (object) => {
+        return {
+          url: `/api/visit?broker_company_id=${object.broker_company_data.id}&start_date=${object.start_date}&end_date=${object.end_date}`,
+          method: "GET",
+        };
+      },
+      invalidatesTags: ["visit"],
+    }),
+
+    brokerCompanies: builder.query({
+      query: () => `/api/client/broker-companies`,
+    }),
+
     deleteBroker: builder.mutation({
       query: (id) => {
         return {
@@ -108,4 +123,6 @@ export const {
   useDeleteBrokerMutation,
   useDeleteOneBrokerMutation,
   useUpdateMutation,
+  useBrokerCompaniesQuery,
+  useGetFilteredDataMutation,
 } = brokerData;

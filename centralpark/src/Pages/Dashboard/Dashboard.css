@@ -18,6 +18,45 @@
 .dashboard .form_inputs {
   padding: 40px;
 }
+
+.filter_form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bc_filter {
+  position: relative;
+}
+
+.bc_filter input {
+  height: 100%;
+}
+
+.bc_filter ul {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 6px;
+  z-index: 222;
+  box-shadow: -1px 3px 21px -6px rgba(0, 0, 0, 0.71);
+  -webkit-box-shadow: -1px 3px 21px -6px rgba(0, 0, 0, 0.71);
+  -moz-box-shadow: -1px 3px 21px -6px rgba(0, 0, 0, 0.71);
+  list-style: none;
+
+  font-weight: 600;
+}
+
+.bc_filter li {
+  cursor: pointer;
+  padding: 3px 10px;
+}
+
+.bc_filter li:hover {
+  background-color: #f5f8fa;
+}
+
 .table_with_data {
   padding: 0 40px 35px;
 }
@@ -28,7 +67,7 @@
 }
 
 .dashboard form {
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
 }
@@ -201,6 +240,6 @@ i:hover {
   color: white;
 }
 
-li:not(:first-child):not(:last-child) {
+.bottom_dashboard_right li:not(:first-child):not(:last-child) {
   display: none;
 }

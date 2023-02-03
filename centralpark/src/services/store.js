@@ -6,6 +6,7 @@ import brokerReducer from "../services/features/NewBrokerSlice";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import editBrokerReducer from "./features/EditModalSlice";
 import editDataReducer from "./features/EditDataSlice";
+import filterSliceReducer from "./features/FilterSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     newBroker: brokerReducer,
     modal: editBrokerReducer,
     editData: editDataReducer,
+    filterData: filterSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

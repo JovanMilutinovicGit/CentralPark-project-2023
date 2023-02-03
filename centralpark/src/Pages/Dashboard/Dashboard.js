@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import {
   useGetBrokerDataQuery,
   useDeleteBrokerMutation,
   useDeleteOneBrokerMutation,
+  useBrokerCompaniesQuery,
+  useGetFilteredDataMutation,
 } from "../../services/brokerData";
 import dateFormat, { masks } from "dateformat";
 import { toast } from "react-toastify";
@@ -16,23 +18,36 @@ import { setData } from "../../services/features/EditDataSlice";
 const Dashboard = () => {
   const [deleteBroker] = useDeleteBrokerMutation();
   const [deleteOneBroker] = useDeleteOneBrokerMutation();
+  const { data: dataCompanies, isLoading: isLoadingData } =
+    useBrokerCompaniesQuery();
   const [selectedItems, setSelectedItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectValue, setSelectValue] = useState(10);
+  const [broker_company_filter, setCBF] = useState("");
+  const [client_company_filter, setCCF] = useState("");
+  const [openDropDown, setOpenDropDown] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const v = {
     cp: currentPage,
     sv: selectValue,
   };
+
   const { data, isLoading } = useGetBrokerDataQuery(v);
+  const [
+    getFilteredData,
+    { data: filter_data, isLoading: isLoadingFilterData },
+  ] = useGetFilteredDataMutation();
+
   masks.hammerTime = "yyyy/m/d HH:MM";
 
   const dispatch = useDispatch();
-
   const handlePageClick = (event) => {
     setCurrentPage(event.selected + 1);
   };
 
+  /*Selektovanje svakog visit-a klikom na checkbox u zaglavlju tabele */
   const handleSelectAll = (e) => {
     if (e.target.checked) {
       setSelectedItems(data.data.map((item) => item.id));
@@ -41,6 +56,7 @@ const Dashboard = () => {
     }
   };
 
+  /*Selektovanje pojedinacnog visita u tabeli */
   const handleSelect = (e, id) => {
     if (e.target.checked) {
       setSelectedItems([...selectedItems, id]);
@@ -49,6 +65,7 @@ const Dashboard = () => {
     }
   };
 
+  /*Brisanje viste od jednog visit-a odjednom*/
   const deleteSelectedItems = () => {
     if (selectedItems.length > 0) {
       toast.success("Visit Deleted Successfully");
@@ -59,6 +76,7 @@ const Dashboard = () => {
     }
   };
 
+  /*Brisanje pojedinacnog visita */
   const deleteOneVisit = () => {
     if (selectedItems.length === 1) {
       toast.success("Visit Deleted Successfully");
@@ -69,9 +87,51 @@ const Dashboard = () => {
     }
   };
 
+  const setFilterBrokerCompany = (value) => {
+    setCBF(value);
+  };
+
+  const setClientFilter = (e) => {
+    setCCF(e.target.value);
+  };
+
   const setSelVal = (event) => {
     setCurrentPage(1);
     setSelectValue(event.target.value);
+  };
+
+  const openDD = () => {
+    setOpenDropDown(!openDropDown);
+  };
+
+  /*Uradjeno ovako, inace moze prostije, preko slice-a */
+
+  const setFilterStartDate = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const setFilterEndDate = (e) => {
+    setEndDate(e.target.value);
+  };
+
+  const objFilter = {
+    broker_company_data: broker_company_filter,
+    start_date: startDate,
+    end_date: endDate,
+  };
+
+  const replaceData = (e) => {
+    e.preventDefault();
+    getFilteredData(objFilter);
+  };
+
+  const resetData = (e) => {
+    e.preventDefault();
+    getFilteredData(null);
+  };
+
+  const modifyFilterBrokerCompany = (e) => {
+    setCBF(e.target.value);
   };
 
   return (
@@ -93,17 +153,46 @@ const Dashboard = () => {
       {!isLoading && (
         <div className="container-fluid">
           <div className="row form_inputs">
-            <div className="col">
-              <form>
-                <input placeholder="Broker company" />
-                <input placeholder="Client company" />
-                <input type="date" />
-                <input type="date" />
+            <div className="col filter_form">
+              <form onSubmit={replaceData}>
+                <div className="bc_filter">
+                  <input
+                    onClick={openDD}
+                    onChange={modifyFilterBrokerCompany}
+                    value={broker_company_filter.title}
+                    placeholder="Broker company"
+                  />
+                  {openDropDown && (
+                    <ul className="broker_list">
+                      {dataCompanies &&
+                        dataCompanies.map((item) => (
+                          <li
+                            onClick={() => {
+                              setFilterBrokerCompany(item);
+                              openDD();
+                            }}
+                            key={item.id}
+                          >
+                            {item.title}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+                <input
+                  onChange={setClientFilter}
+                  value={client_company_filter}
+                  placeholder="Client company"
+                />
+                <input type="date" onChange={setFilterStartDate} />
+                <input type="date" onChange={setFilterEndDate} />
                 <button className="filter_btn">
                   <i className="fa fa-filter" aria-hidden="true"></i>
                 </button>
-                <button className="reset_btn">Reset</button>
               </form>
+              <button className="reset_btn" onClick={resetData}>
+                Reset
+              </button>
             </div>
           </div>
           <div className="row table_with_data">
@@ -112,7 +201,7 @@ const Dashboard = () => {
                 <table className="table_data">
                   <thead>
                     <tr>
-                      <th>
+                      <th className="selected_item">
                         <input type="checkbox" onChange={handleSelectAll} />
                       </th>
                       <th>Broker company</th>
@@ -124,8 +213,9 @@ const Dashboard = () => {
                       <th>First visit</th>
                       <th className="actions_title">Actions</th>
                     </tr>
+
                     {data
-                      ? data.data.map(
+                      ? (filter_data ? filter_data.data : data.data).map(
                           ({
                             id,
                             broker_company: { title },
@@ -142,7 +232,7 @@ const Dashboard = () => {
                           }) => {
                             return (
                               <tr key={id}>
-                                <td>
+                                <td className="selected_item">
                                   <input
                                     type="checkbox"
                                     onChange={(e) => handleSelect(e, id)}
@@ -222,7 +312,7 @@ const Dashboard = () => {
                             );
                           }
                         )
-                      : ""}
+                      : "No data"}
                   </thead>
                 </table>
               </div>
@@ -248,10 +338,10 @@ const Dashboard = () => {
                     <>
                       <ReactPaginate
                         breakLabel="..."
-                        nextLabel="Next"
+                        nextLabel="NEXT"
                         onPageChange={handlePageClick}
                         pageCount={data.total / data.per_page}
-                        previousLabel="Prev"
+                        previousLabel={currentPage > 1 ? "PREV" : null}
                         renderOnZeroPageCOunt={null}
                       />
                     </>
